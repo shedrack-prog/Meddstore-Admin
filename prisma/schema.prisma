@@ -13,9 +13,9 @@ datasource db {
 
 
  model Store {
-    id           String       @id @default(auto()) @map("_id") @db.ObjectId  
-    name        String 
-    userId      String       @db.ObjectId
+    id          String       @id @default(uuid())  @map("_id") @db.String
+    name        String       
+    userId      String      @db.String
     billboards  Billboard[] @relation("StoreToBillboard")
     categories  Category[]  @relation("StoreToCategory")
     sizes       Size[]      @relation("StoreToSize")
@@ -28,9 +28,9 @@ datasource db {
 
 
  model Billboard {
-  id           String       @id @default(auto()) @map("_id") @db.ObjectId  
-  storeId      String         @db.ObjectId
-  store        Store      @relation("StoreToBillboard", fields: [storeId], references: [id])
+  id           String        @id @default(uuid())  @map("_id") @db.String  
+  storeId      String        @db.String
+  store        Store         @relation("StoreToBillboard", fields: [storeId], references: [id])
   category     Category[]
   label        String
   imgUrl       String
@@ -43,11 +43,11 @@ datasource db {
 
 
  model Category {
-  id           String             @id @default(auto()) @map("_id") @db.ObjectId  
+  id              String             @id @default(uuid()) @map("_id") @db.String 
   
-  storeId         String            @db.ObjectId
+  storeId         String            @db.String
   store           Store            @relation("StoreToCategory", fields: [storeId], references: [id])
-  billboardId     String              @db.ObjectId
+  billboardId     String              @db.String
   billboard       Billboard        @relation( fields: [billboardId], references: [id])
   products        Product[]        @relation("CategoryToProduct")
   name            String
@@ -62,8 +62,8 @@ datasource db {
 
 
  model Size { 
-  id           String           @id @default(auto()) @map("_id") @db.ObjectId  
-  storeId       String           @db.ObjectId
+  id           String           @id @default(uuid()) @map("_id") @db.String
+  storeId       String           @db.String
   store         Store             @relation("StoreToSize", fields: [storeId], references: [id])
   products      Product[]
   name          String
@@ -78,8 +78,8 @@ datasource db {
 
 
  model Color { 
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId  
-  storeId       String       @db.ObjectId
+  id            String       @id @default(uuid()) @map("_id") @db.String
+  storeId       String       @db.String
   store         Store        @relation("StoreToColor", fields: [storeId], references: [id])
   name          String
   value         String
@@ -93,19 +93,19 @@ datasource db {
  }
 
  model Product {
-  id           String       @id @default(auto()) @map("_id") @db.ObjectId  
+  id           String       @id @default(uuid())  @map("_id") @db.String
  
-  storeId        String      @db.ObjectId
+  storeId        String      @db.String
   store          Store       @relation("StoreToProduct", fields: [storeId], references: [id])
-  categoryId     String      @db.ObjectId
+  categoryId     String      @db.String
   category       Category    @relation("CategoryToProduct", fields: [categoryId], references: [id])
   name           String
-  price          String
+  price          Int
   isFeatured     Boolean     @default(false)
   isArchived     Boolean     @default(false)
-  sizeId         String      @db.ObjectId
+  sizeId         String      @db.String
   size           Size        @relation(fields: [sizeId], references: [id])  
-  colorId        String      @db.ObjectId
+  colorId        String      @db.String
   color          Color       @relation(fields: [colorId], references: [id])
   images         Image[]
   orderItems     orderItem[]
@@ -120,8 +120,8 @@ datasource db {
 
 
  model Image {
-    id           String       @id @default(auto()) @map("_id") @db.ObjectId  
-  productId      String       @db.ObjectId
+    id           String       @id @default(uuid())  @map("_id") @db.String  
+  productId      String       @db.String
   product        Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
   url            String
   createdAt      DateTime     @default(now())
@@ -132,9 +132,9 @@ datasource db {
 
 
  model Order {
-   id           String           @id @default(auto()) @map("_id") @db.ObjectId  
+   id           String           @id @default(uuid())  @map("_id") @db.String 
 
-  storeId        String          @db.ObjectId
+  storeId        String          @db.String
   store          Store           @relation("StoreToOrder", fields: [storeId], references: [id])
   orderItems     orderItem[]
   isPaid         Boolean         @default(false)
@@ -149,11 +149,11 @@ datasource db {
  }
 
  model orderItem {
-  id           String           @id @default(auto()) @map("_id") @db.ObjectId  
+  id           String           @id @default(uuid())  @map("_id") @db.String 
 
-  orderId        String         @db.ObjectId
+  orderId        String         @db.String
   order          Order          @relation(fields: [orderId], references: [id])
-  productId      String         @db.ObjectId
+  productId      String         @db.String
   product        Product        @relation(fields: [productId], references: [id])
 
 

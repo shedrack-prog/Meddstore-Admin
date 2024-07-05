@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       },
       data: {
         isPaid: true,
-        address: addressString,
+        address: session?.customer_details?.address?.line1 || '',
         phone: session?.customer_details?.phone || '',
       },
       include: {
